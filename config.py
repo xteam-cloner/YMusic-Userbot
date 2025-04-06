@@ -14,7 +14,7 @@ API_HASH = getenv("API_HASH")
 # Get your token from @BotFather on Telegram.
 BOT_TOKEN = getenv("BOT_TOKEN")
 
-SESSION_STRING = config("SESSION_STRING")
+SESSION_STRING = getenv("SESSION_STRING")
 
 BOT_USERNAME = getenv("BOT_USERNAME")
 
@@ -24,7 +24,7 @@ MONGO_DB_URI = getenv("MONGO_DB_URI")
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 240))
 
 # Chat id of a group for logging bot's activities
-LOG_GROUP_ID = int(getenv("LOGGER_ID"))
+LOG_GROUP_ID = int(getenv("LOG_GROUP_ID"))
 
 # Get this value from @FallenxBot on Telegram by /id
 OWNER_ID = int(getenv("OWNER_ID"))
