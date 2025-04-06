@@ -6,3 +6,4 @@ sudo()
 
 app = YMusicBot
 call = YMusicBot
+app = VIPBot()
