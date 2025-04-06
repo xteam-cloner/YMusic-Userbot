@@ -5,3 +5,4 @@ from YMusic.misc import sudo
 sudo()
 
 app = VIPBot()
+VIP = Call()
