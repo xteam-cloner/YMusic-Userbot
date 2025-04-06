@@ -1,12 +1,10 @@
 import re
-import os
 from os import getenv
+
 from dotenv import load_dotenv
 from pyrogram import filters
-import sys
 
 load_dotenv()
-
 # Configuration using getenv and decouple config
 API_ID = getenv("API_ID")
 API_HASH = getenv("API_HASH")
