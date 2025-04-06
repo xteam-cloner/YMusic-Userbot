@@ -15,7 +15,7 @@ API_HASH = getenv("API_HASH")
 # Get your token from @BotFather on Telegram.
 BOT_TOKEN = getenv("BOT_TOKEN")
 
-SESSION = config("SESSION")
+SESSION_STRING = config("SESSION_STRING")
 
 BOT_USERNAME = getenv("BOT_USERNAME")
 
