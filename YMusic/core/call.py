@@ -13,15 +13,15 @@ from pyrogram.errors import (
     UserNotParticipant,
 )
 from pyrogram.types import InlineKeyboardMarkup
-from pytgcalls import PyTgCalls
-from pytgcalls.exceptions import AlreadyJoinedError, NoActiveGroupCall
-from pytgcalls.types import (
+from pytgcalls import PyTgCalls, Update
+#from pytgcalls.exceptions import AlreadyJoinedError, NoActiveGroupCall
+"""from pytgcalls.types import (
     JoinedGroupCallParticipant,
     LeftGroupCallParticipant,
     MediaStream,
     Update,
-)
-from pytgcalls.types.stream import StreamAudioEnded
+)"""
+#from pytgcalls.types.stream import StreamAudioEnded
 
 import config
 
