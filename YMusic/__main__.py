@@ -4,7 +4,7 @@ from pytgcalls import idle
 
 from YMusic import LOGGER
 from YMusic.plugins import ALL_MODULES
-from YMusic import app, Vip
+from YMusic import app, VIP
 
 loop = asyncio.get_event_loop()
 
