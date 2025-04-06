@@ -27,9 +27,9 @@ LOG_GROUP_ID = getenv("LOG_GROUP_ID")
 # Get this value from @FallenxBot on Telegram by /id
 OWNER_ID = getenv("OWNER_ID")
 
-PREFIX = int(getenv("PREFIX", !))
+PREFIX = "!"
 
-RPREFIX = int(getenv("RPREFIX", $))
+RPREFIX = "$"
 
 
 # No Need To Edit Below This
