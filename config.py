@@ -27,6 +27,7 @@ LOG_GROUP_ID = getenv("LOG_GROUP_ID")
 # Get this value from @FallenxBot on Telegram by /id
 OWNER_ID = list(
     map(int, getenv("OWNER_ID", "1434595544").split())
+)
 
 PREFIX = "!"
 
