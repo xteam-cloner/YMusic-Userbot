@@ -29,3 +29,11 @@ LOG_GROUP_ID = int(getenv("LOGGER_ID"))
 
 # Get this value from @FallenxBot on Telegram by /id
 OWNER_ID = int(getenv("OWNER_ID"))
+PREFIX = int(getenv(".")
+
+RPREFIX = int(getenv("$")
+
+
+# No Need To Edit Below This
+
+LOG_FILE_NAME = "YMusic.txt"
