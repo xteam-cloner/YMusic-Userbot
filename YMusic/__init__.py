@@ -4,6 +4,5 @@ from YMusic.misc import sudo
 
 sudo()
 
-app = YMusicBot
-call = YMusicBot
 app = VIPBot()
+call = Call()
