@@ -28,7 +28,7 @@ sudo apt update && sudo apt upgrade -y && sudo apt install python3 git yt-dlp ff
 ```
 
 ```sh
-git clone https://github.com/EnhancedProtection/YMusic-Userbot.git
+git clone https://github.com/xteam-cloner/YMusic-Userbot
 ```
 
 ```sh
