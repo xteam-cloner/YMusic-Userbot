@@ -18,7 +18,7 @@ async def init():
         importlib.import_module("YMusic.plugins" + all_module)
 
     LOGGER("YMusic.plugins").info("Successfully Imported Modules")
-    await call.start()
+    await Vip.start()
     await idle()
 
 if __name__ == "__main__":
