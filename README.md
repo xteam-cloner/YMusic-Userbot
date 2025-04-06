@@ -35,6 +35,10 @@ git clone https://github.com/EnhancedProtection/YMusic-Userbot.git
 cd YMusic-Userbot && pip install -r requirements.txt
 ```
 
+```sh
+cp sample.env .env && vi .env
+```
+
 ### Fill the required data in "config/config.py" file
 
 You can get the required data from [here](https://my.telegram.org/)
