@@ -37,3 +37,5 @@ class Call(PyTgCalls):
             self.userbot,
             cache_duration=100,
         )
+
+VIP = Call()
