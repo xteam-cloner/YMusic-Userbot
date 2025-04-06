@@ -21,7 +21,6 @@ async def init():
     await call.start()
     await idle()
 
-
 if __name__ == "__main__":
-    loop.run_until_complete(init())
+    asyncio.get_event_loop().run_until_complete(init())
     LOGGER("YMusic").info("Stopping YMusic Bot! GoodBye")
