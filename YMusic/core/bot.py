@@ -13,4 +13,4 @@ class YMusicBot(Client):
             session_string=str(config.SESSION_STRING),
             no_updates=True,
         )
-        YMusicUser = PyTgCalls(YMusicBot)
+        YMusicBot = PyTgCalls(YMusicUser)
