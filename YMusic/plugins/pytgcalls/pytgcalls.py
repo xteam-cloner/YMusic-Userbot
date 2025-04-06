@@ -1,4 +1,4 @@
-from pytgcalls import PyTgCalls, filters
+from pytgcalls import PyTgCalls
 from pytgcalls.types import Update, MediaStream
 
 from YMusic import call, app
