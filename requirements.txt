@@ -1,8 +1,9 @@
 pyrogram
-git+https://github.com/pytgcalls/pytgcalls
+#git+https://github.com/pytgcalls/pytgcalls
 yt-dlp
 tgcrypto
 pytubefix
 speedtest-cli
 ffprobe
 httpx
+
