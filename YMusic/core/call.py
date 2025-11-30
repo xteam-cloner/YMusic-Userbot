@@ -1,37 +1,32 @@
 import asyncio
-import os
-from datetime import datetime, timedelta
 from typing import Union
 
-from ntgcalls import TelegramServerError
-from pyrogram import Client
-from pyrogram.enums import ChatMembersFilter, ChatMemberStatus
-from pyrogram.errors import (
-    ChatAdminRequired,
-    FloodWait,
-    UserAlreadyParticipant,
-    UserNotParticipant,
-)
-from pyrogram.types import InlineKeyboardMarkup
-# HAPUS BARIS INI: from pytgcalls import PyTgCalls <--- (Ini penyebab error!)
+# Import-impor Pyrogram tetap di atas
+from pyrogram import Client 
+
+# HAPUS BARIS INI: from pytgcalls import PyTgCalls 
+# Jika baris ini ada di sini, kesalahan akan muncul saat file ini diimpor!
 
 import config
 
 class Call:
+    """Kelas untuk mengelola klien Pyrogram dan PyTgCalls."""
+
     def __init__(self):
         # Menyimpan konfigurasi
         self.api_id = config.API_ID
         self.api_hash = config.API_HASH
         self.session_string = str(config.SESSION_STRING)
         
-        # Variabel untuk klien
+        # Inisialisasi klien sebagai None
         self.userbot: Union[Client, None] = None
-        self.one: Union[object, None] = None # Gunakan 'object' karena PyTgCalls belum diimpor
+        self.one: Union[object, None] = None
         
     async def start(self):
-        """Menginisialisasi dan memulai klien PYTGCALLS di dalam konteks ASYNCHRONOUS."""
+        """Metode asinkron untuk menginisialisasi dan memulai klien PyTgCalls."""
         
-        # ⚠️ IMPOR PYTGCALLS DI SINI (DEFERRED IMPORT)
+        # ⚠️ SOLUSI UTAMA: Impor PyTgCalls DI SINI (Deferred Import)
+        # Baris ini HANYA dieksekusi setelah event loop dibuat dan berjalan.
         from pytgcalls import PyTgCalls 
         
         # 1. Inisialisasi Pyrogram Client
@@ -58,10 +53,15 @@ class Call:
     async def stop(self):
         """Metode asinkron untuk menghentikan klien."""
         if self.one:
-            await self.one.stop()
+            # Karena PyTgCalls diimpor saat runtime, kita perlu memastikan 
+            # ia ada sebelum mencoba menghentikannya.
+            try:
+                await self.one.stop()
+            except AttributeError:
+                pass # Klien mungkin belum berhasil dimulai
         if self.userbot:
             await self.userbot.stop()
         print("Klien VIP telah dihentikan.")
         
-# Inisialisasi objek Call yang AMAN
+# Inisialisasi objek Call yang aman di tingkat modul
 VIP = Call()
