@@ -1,50 +1,57 @@
 import importlib
 import asyncio
-# from pytgcalls import idle <--- Hapus impor global ini, gunakan hanya jika diperlukan
-# dari dalam fungsi async.
+from pytgcalls import idle # OK untuk diimpor di sini, tetapi pastikan PyTgCalls ditunda
 
 from YMusic import LOGGER
 from YMusic.plugins import ALL_MODULES
-from YMusic import app, VIP # Asumsi VIP telah diperbaiki (lihat file 2)
+
+# ⚠️ Variabel Global: Definisikan sebagai None dulu
+# Asumsi: Anda juga perlu mengimpor VIPBot untuk bisa menginstansiasinya
+from YMusic.core.bot import VIPBot 
+from YMusic.core.call import Call # Asumsi VIPBot adalah Bot, dan VIP adalah Call
+
+app = None # Klien Pyrogram (VIPBot)
+VIP = None # Klien PyTgCalls (Call/Userbot)
 
 # HAPUS: loop = asyncio.get_event_loop()
+# HAPUS: app = VIPBot() # Ini memicu error!
 
 async def init():
-    """Fungsi inisialisasi utama yang dijalankan di dalam event loop."""
-    
-    # Memulai klien Pyrogram
+    """
+    Fungsi inisialisasi utama yang dijalankan di dalam event loop.
+    Semua instansiasi klien harus dilakukan di sini.
+    """
+    global app, VIP # Deklarasikan untuk memodifikasi variabel global
+
+    # 1. Instansiasi Klien (Di dalam loop)
+    # Ini aman karena event loop sudah dibuat oleh asyncio.run()
+    app = VIPBot()
+    VIP = Call()
+
+    # 2. Memulai klien Pyrogram
     await app.start()
     LOGGER("YMusic").info("Account Started Successfully")
 
-    # Mengimpor semua modul plugin secara dinamis
+    # 3. Mengimpor semua modul plugin secara dinamis
     for all_module in ALL_MODULES:
         try:
-            # Menggunakan f-string untuk impor modul yang lebih jelas
             importlib.import_module(f"YMusic.plugins.{all_module}")
         except Exception as e:
             LOGGER("YMusic.plugins").error(f"Failed to import module {all_module}: {e}")
 
     LOGGER("YMusic.plugins").info("Successfully Imported Modules")
     
-    # Memulai klien PyTgCalls (VIP) - Ini akan memanggil PyTgCalls(Client)
+    # 4. Memulai klien PyTgCalls
     await VIP.start()
     
-    # Impor idle di sini (di dalam konteks asinkron) jika ia dibutuhkan:
-    try:
-        from pytgcalls import idle 
-        await idle()
-    except ImportError:
-        LOGGER("YMusic").warning("pytgcalls.idle not found. Bot will stop after startup.")
-        # Jika idle tidak tersedia, gunakan sleep untuk menjaga loop tetap hidup:
-        await asyncio.sleep(86400) # Tidur selama 24 jam jika idle gagal
+    # 5. Menjaga loop tetap hidup
+    await idle()
 
 # Blok eksekusi utama (Entry Point)
 if __name__ == "__main__":
     LOGGER("YMusic").info("Starting YMusic Bot...")
     try:
-        # PENGGUNAAN UTAMA: asyncio.run() adalah metode modern dan benar
-        # untuk menjalankan fungsi async tingkat atas, karena ia 
-        # membuat, menjalankan, dan membersihkan event loop secara otomatis.
+        # Gunakan asyncio.run() untuk membuat, menjalankan, dan membersihkan loop
         asyncio.run(init())
     except KeyboardInterrupt:
         LOGGER("YMusic").info("Stopping YMusic Bot! GoodBye")
