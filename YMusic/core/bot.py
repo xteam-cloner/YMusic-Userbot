@@ -1,91 +1,55 @@
-# Copyright (C) 2024 by THE-VIP-BOY-OP@Github, <https://github.com/THE-VIP-BOY-OP>.
-# This file is part of <https://github.com/THE-VIP-BOY-OP/VIP-MUSIC> project,
-# and is released under the "GNU v3.0 License Agreement".
-# Please see <https://github.com/THE-VIP-BOY-OP/VIP-MUSIC/blob/master/LICENSE>
-# All rights reserved.
-
-import asyncio
-import threading
-
-import uvloop
-from flask import Flask
-from pyrogram import Client, idle
+import sys
+from pyrogram import Client, errors
 from pyrogram.enums import ChatMemberStatus
-from pyrogram.types import (
-    BotCommand,
-    BotCommandScopeAllChatAdministrators,
-    BotCommandScopeAllGroupChats,
-    BotCommandScopeAllPrivateChats,
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-)
 
 import config
-
 from ..logging import LOGGER
 
-uvloop.install()
 
-# Flask app initialize
-app = Flask(__name__)
-
-
-@app.route("/")
-def home():
-    return "Bot is running"
-
-
-def run():
-    app.run(host="0.0.0.0", port=8000, debug=False)
-
-
-# VIPBot Class
-class VIPBot(Client):
+class JARVIS(Client):
     def __init__(self):
-        LOGGER(__name__).info("Starting Bot")
         super().__init__(
-            "VIPMUSIC",
+            name="AnnieXMusic",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             bot_token=config.BOT_TOKEN,
+            in_memory=True,
+            workers=48,
+            max_concurrent_transmissions=7,
         )
+        LOGGER(__name__).info("Bot client initialized.")
 
     async def start(self):
         await super().start()
-        get_me = await self.get_me()
-        self.username = get_me.username
-        self.id = get_me.id
-        self.name = get_me.first_name + " " + (get_me.last_name or "")
-        self.mention = get_me.mention
+        me = await self.get_me()
+        self.username, self.id = me.username, me.id
+        self.name = f"{me.first_name} {me.last_name or ''}".strip()
+        self.mention = me.mention
 
-        button = InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(
-                        text="๏ ᴀᴅᴅ ᴍᴇ ɪɴ ɢʀᴏᴜᴘ ๏",
-                        url=f"https://t.me/{self.username}?startgroup=true",
-                    )
-                ]
-            ]
-        )
-        
-async def anony_boot():
-    bot = VIPBot()
-    await bot.start()
-    await idle()
+        try:
+            await self.send_message(
+                config.LOGGER_ID,
+                (
+                    f"<u><b>» {self.mention} ʙᴏᴛ sᴛᴀʀᴛᴇᴅ :</b></u>\n\n"
+                    f"ɪᴅ : <code>{self.id}</code>\n"
+                    f"ɴᴀᴍᴇ : {self.name}\n"
+                    f"ᴜsᴇʀɴᴀᴍᴇ : @{self.username}"
+                ),
+            )
+        except (errors.ChannelInvalid, errors.PeerIdInvalid):
+            LOGGER(__name__).error("❌ Bot cannot access the log group/channel – add & promote it first!")
+            sys.exit()
+        except Exception as exc:
+            LOGGER(__name__).error(f"❌ Bot has failed to access the log group.\nReason: {type(exc).__name__}")
+            sys.exit()
 
+        try:
+            member = await self.get_chat_member(config.LOGGER_ID, self.id)
+            if member.status != ChatMemberStatus.ADMINISTRATOR:
+                LOGGER(__name__).error("❌ Promote the bot as admin in the log group/channel.")
+                sys.exit()
+        except Exception as e:
+            LOGGER(__name__).error(f"❌ Could not check admin status: {e}")
+            sys.exit()
 
-if __name__ == "__main__":
-    LOGGER(__name__).info("Starting Flask server...")
-
-    # Start Flask server in a new thread
-    t = threading.Thread(target=run)
-    t.daemon = True
-    t.start()
-
-    LOGGER(__name__).info("Starting VIPBot...")
-
-    # Run the bot
-    asyncio.run(anony_boot())
-
-    LOGGER(__name__).info("Stopping VIPBot...")
+        LOGGER(__name__).info(f"✅ Music Bot started as {self.name} (@{self.username})")
